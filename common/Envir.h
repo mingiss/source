@@ -544,5 +544,3 @@ typedef int CWnd;
 //
 
 #endif
-
-// zzzz
