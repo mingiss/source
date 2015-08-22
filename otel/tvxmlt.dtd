@@ -1,0 +1,1712 @@
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- XML file DTD for dictionaries -->
+<!-- Based on markup of Oxford-Hachette english/french/englich dictionary (OHEF) -->
+
+<!-- AKLZ - Enciklopedinis kompiuterijos žodynas -->
+<!-- PAVZ - Paveikslėlių žodynas -->
+<!-- MAC - MacMillan, Aiškinamasis ekonomikos anglų-lietuvių žodynas -->
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Dictionary -->
+<!-- Žodynas -->
+<!-- Whole dictionary file -->
+<!ELEMENT di (ue | se)* >
+<!ATTLIST di name CDATA #IMPLIED>
+
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Standard Entry -->
+<!-- Lizdas -->
+<!-- Normal dictionary entry with obligatory headword field <hw>. -->
+<!-- The first <hw> field acts as headword of whole entry. -->
+<!-- TODO: Extract entry headword to additional textual attribute, -->
+<!--    <!ATTLIST se name CDATA #IMPLIED>, for example? -->
+<!--    (look <st> tag) -->
+<!ELEMENT se (st?, hg*) >
+<!-- Standard entry numerical identifier ({se_id}) - pure decimal number, unique within limits of one file -->
+<!-- Entry of index <filename>_se.ix -->
+<!-- <se id="12345"> -->
+<!ATTLIST se id CDATA #REQUIRED>
+
+<!-- Compound Entry -->
+<!-- Darinių lizdas -->
+<!-- Entry without ordinary headword, describing a set of structures, compounds or derivatives only. -->
+<!-- Has <cw> or <hbase> as a headword. -->
+<!-- In OHEF only -->
+<!-- TODO: <!ELEMENT ce (st?, hg) > -->
+
+<!-- Dummy Entry -->
+<!-- Pagalbinis lizdas -->
+<!-- Dummy, informational, etc. entry. -->
+<!-- Contains editor remarks, usage notes, tables, inserts, etc. -->
+<!-- Contents usually are supressed. -->
+<!ELEMENT ue (#PCDATA | xr | pt | ct | cn)* >
+
+<!-- No-Root-Entry -->
+<!-- Šalutinis lizdas -->
+<!-- In OHEF only. -->
+<!-- Contains only headwords without any other additional material. -->
+<!-- Contents output with the following semicolon. -->
+<!-- TODO <!ELEMENT ne (hg) > -->
+
+
+<!-- Entry ID Variant -->
+<!-- Standard entry alphanumerical identifier, alias of <!ATTLIST se id CDATA #REQUIRED> -->
+<!-- TODO: Move to attribute of <se>, <!ATTLIST se name CDATA #IMPLIED>, for example? -->
+<!-- Entry of index <filename>_st.ix -->
+<!-- <st>12345a</st> - could be used for insertion of new entries -->
+<!--    preserving sorting order and keeping intact id's of other entries -->
+<!ELEMENT st (#PCDATA | ct | cn)* >
+
+<!-- Semantic Number -->
+<!-- Semantinis numeris -->
+<!-- Order number of the entry, when entries, for example, are records in the table. -->
+<!-- (Item number inside of a page in PAVZ.)  -->
+<!-- Referenced by tags <xs>. -->
+<!ELEMENT nr (#PCDATA | ct | cn)* >
+
+<!-- Page Number -->
+<!-- Puslapio numeris -->
+<!-- Number of the page, whole table, thema or file (thema/page number in PAVZ). -->
+<!-- In case of agregate multiple-<hw> entries, <tn> appears in the heading of each aggregated entry. -->
+<!-- Referenced by tags <n>. -->
+<!ELEMENT tn (#PCDATA | ct | cn)* >
+
+<!-- Template label -->
+<!-- Šablono lizdas -->
+<!-- OHEF: used to identify the template entry which the current entry is modelled upon? -->
+<!-- <!ELEMENT tp (#PCDATA | ct | cn)* > -->
+
+
+<!-- Nodes - - - - - - - - - - - - - - - - - -->
+<!-- Mazgai  - - - - - - - - - - - - - - - - - -->
+
+<!-- Headword Group -->
+<!-- Antraštės grupė -->
+<!-- Usually contains all data of the entry, i.e., <hg> - single child of <se> -->
+<!-- Though could be multi-<hg> entries (picture dictionary PAVZ entry = one page of headwords) -->
+<!-- There could be also some external remarks, not belonging to <hg>. -->
+<!-- In OHEF <hg> is used in sence of <vg>? -->
+<!ELEMENT hg (((hw | base | cw | hbase | (v | vn | pt)*), (pr | ic | dc)*, la?, co?, (ct | cn | ps | gr | ic | dc | cp)*, pp*, (fg | pr | ic | dc | cp)*, (la | co | ic | pt)*, tg*, xr?)*, cg*, dg*, sg*, pvp*, (s1* | s2* | s3* | (eg*, id*)), xr?, un*) >
+
+<!-- Variant Group -->
+<!-- Variantų grupė -->
+<!-- Small group of heading tags (headword, forms, variants), belonging to one headword. -->
+<!-- <hg> in OHEF? -->
+<!ELEMENT vg (((hw | base | cw | hbase | (v | vn | pt)*), (pr | ic)*, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*, tg*, xr?)*, cg*, dg*, sg*, pvp*, (s1* | s2* | s3* | (eg*, id*)), xr?, un*) >
+
+
+<!-- Headword -->
+<!-- Antraštė -->
+<!-- Entry headword, single in <hg>/<se>. -->
+<!-- Additional headwords - variants <v>. -->
+<!-- Usually in bold font. -->
+<!-- Entry of index <filename>_hw.ix -->
+<!ELEMENT hw (#PCDATA | hm | ast | pt)* >
+
+
+<!-- Variant -->
+<!-- Variantas -->
+<!-- Spelling variation of entry headword <hw>. -->
+<!-- Usually in bold font. -->
+<!-- Entry of index <filename>_hw.ix -->
+<!ELEMENT v (#PCDATA | hm | ast | pt)* >
+
+<!-- Variant (normal font) -->
+<!-- Variantas (normaliu šriftu) -->
+<!-- Also could be additional explanatory text belonging to the headword - like <in>. -->
+<!ELEMENT vn (#PCDATA | pt)* >
+
+<!-- Phrasal Verb Variant -->
+<!-- Veiksmažodinio junginio antraštės variantas -->
+<!-- Variant of <lh>, OHEF only. -->
+<!-- <!ELEMENT vs (#PCDATA | pt)* > -->
+
+
+<!-- Expanded Form -->
+<!-- Pilna sutrumpinimo forma -->
+<!-- Expanded form of the headword, wheh the latter is an abbreviation. -->
+<!-- Sometmes used vice versa - as an abbreviation of the headword. -->
+<!ELEMENT ef (#PCDATA | pt)* >
+
+
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Category -->
+<!-- Kategorija -->
+<!-- Grammatical category group -->
+<!-- Usually numbered by bold roman numbers I, II, III -->
+<!ELEMENT s1 ((((v | vn | pt)*, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*)*, tg*, xr?)*, (s2* | s3* | (eg*,  id*))) >
+<!-- Category order number - roman digits -->
+<!ATTLIST s1 num CDATA #REQUIRED>
+<!-- <s1 num=I nl=n>? Appears only in first <s1> tag, OHEF only. -->
+<!-- <!ATTLIST s1 nl CDATA #IMPLIED> -->
+
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Meaning -->
+<!-- Reikšmė -->
+<!-- Meaning (semantical category) group -->
+<!-- Numbering increments over whole entry. -->
+<!-- Usually numbered by bold numbers 1., 2., 3. -->
+<!ELEMENT s2 (((v | vn | pt)*, (pr | ic)*, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*, tg*, xr?)*, (s3* | eg*)) >
+<!-- Category order number - arabic digits -->
+<!ATTLIST s2 num CDATA #REQUIRED>
+
+<!-- Compound Meaning -->
+<!-- Darinio reikšmė -->
+<!-- Meaning enumeration inside of one compound group. -->
+<!-- Numbering is reset on leaving each compound group. -->
+<!ELEMENT s2c (((v | vn | pt)*, (pr | ic)*, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*, tg*, xr?)*, (s3* | eg*)) >
+<!-- Compound meaning order number - arabic digits -->
+<!ATTLIST s2c num CDATA #REQUIRED>
+
+<!-- Idiom Meaning -->
+<!-- Frazeologizmo reikšmė -->
+<!-- Meaning enumeration inside of one idiom group. -->
+<!-- Numbering is reset on leaving each idiom group. -->
+<!ELEMENT s2i (((v | vn | pt)*, (pr | ic)*, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*, tg*, xr?)*, (s3* | eg*)) >
+<!-- Compound meaning order number - arabic digits -->
+<!ATTLIST s2i num CDATA #REQUIRED>
+
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Near Meaning -->
+<!-- Artima reikšmė -->
+<!-- Near meaning (semantical category) group -->
+<!-- Usually numbered by a), b), c) -->
+<!ELEMENT s3 (((v | vn | pt)*, (pr | ic)*, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*, tg*, xr?)*, eg*) >
+<!-- Category order number - small latin letters -->
+<!ATTLIST s3 num CDATA #REQUIRED>
+
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Groups of compounds -->
+
+<!-- Compoud Group -->
+<!-- Darinio grupė -->
+<!-- Aggregate multiple-root words (single word - some roots). -->
+<!-- Sudurtiniai žodžiai. -->
+<!ELEMENT cg (((lc | (v | vn | pt)*), (pr | ic)*, (ic | pt)?, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*, tg*, xr?)*, (s1* | s2* | s3* | (eg*, id*))) >
+
+<!-- Derivative Group -->
+<!-- Išvestinio žodžio grupė -->
+<!-- Aggregate single-root words, made of main headword root using suffixes, prefixes, etc. -->
+<!-- Sudurtiniai žodžiai. -->
+<!ELEMENT dg (((ld | (v | vn | pt)*), (pr | ic)*, (ic | pt)?, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*, tg*, xr?)*, (s1* | s2* | s3* | (eg*, id*))) >
+
+<!-- Structure Group -->
+<!-- Junginio grupė -->
+<!-- Multiple word collocations, having settled meaning, -->
+<!--    probably (slightly) different from the direct meaning of the main headword. -->
+<!-- Differ from examples, which explain the main meaning of the headword. -->
+<!ELEMENT sg (((ls | lo | (v | vn | pt)*), (pr | ic)*, (ic | pt)?, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*, tg*, xr?)*, (s1* | s2* | s3* | (eg*, id*))) >
+
+<!-- Phrase Group -->
+<!-- Frazės grupė -->
+<!-- Subgroup of <cg>, <dg> or <sg>, preceeded by some special compound base header - <cw>, <hbase> or <lh> (<lv>). -->
+<!-- In OHEF - Phrasal Verb Pattern Group, used after <lh>, delimited with symbol "¶", containing headers <lp>. -->
+<!ELEMENT pvp (((ls | (v | vn | pt)*), (pr | ic)*, (ic | pt)?, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*, tg*, xr?)*, (s1* | s2* | s3* | (eg*, id*))) >
+
+<!-- Noun Modifier Group -->
+<!-- Daiktavardinio junginio grupė -->
+<!-- Group of noun modifiers, containing headers <mc>. -->
+<!ELEMENT mg (((mc | (v | vn | pt)*), (pr | ic)*, (ic | pt)?, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (la | co | ic | pt)*, tg*, xr?)*, (s1* | s2* | s3* | (eg*, id*))) >
+
+
+
+<!-- Common headwords preceding subgroups of compounds -->
+
+<!-- Headword Base -->
+<!-- Antraštės bazė -->
+<!-- Common part of compound headwords, replaced by "~" in compound headwords (<lc>, <ls>, etc.) -->
+<!-- Hidden tag, used for internal purposes in compound processing. -->
+<!-- Actually part of the headword before of delimitter "||", usually root of the headword. -->
+<!-- Placed not before the partially subgroup of compounds, but in main headword part of the entry. -->
+<!-- <base><bhw>...</bhw></base> in OHEF acts as <cw>. -->
+<!-- Entry of index <filename>_hw.ix -->
+<!-- TODO: rename to <bhw> -->
+<!ELEMENT base (#PCDATA | pt)* >
+
+
+<!-- Compound Base -->
+<!-- Junginių grupės antraštė -->
+<!-- Headword of <ce> entry or <cg>/<sg> group with further <pvp> subgroups. -->
+<!-- <cw> usually is followed by ":" and further <sg>, <cg> or <pvp> groups. -->
+<!-- Actually it is common part of followed compounds - look <base>. -->
+<!-- <base><bhw>...</bhw></base> in OHEF -->
+<!-- Usually in bold font. -->
+<!-- Entry of index <filename>_hw.ix (concatenated with <base>) -->
+<!-- TODO: rename to <base> (after renaming of <base> to <bhw>) -->
+<!ELEMENT cw (#PCDATA | hm | ast | pt)* >
+
+<!-- Hidden Base -->
+<!-- Paslėpta junginių grupės antraštė -->
+<!-- Headword of entry or group, describing a single structure, compound or derivative only. -->
+<!-- Like <cw>, but hidden - no grouping headword is needed - there is no enumeration, -->
+<!--    group consists of single compound, acting as a headword itself. -->
+<!-- <hbase><bhw>...</bhw></hbase> in OHEF -->
+<!ELEMENT hbase (#PCDATA | pt)* >
+
+<!-- Phrasal Verb -->
+<!-- Veiksmažodinio junginio antraštė -->
+<!-- Headword of <ce> entry or <sg> group with further <pvp> subgroups - common part of further phrasal verb pattern collocations. -->
+<!-- Like <cw>, but used for phrasal verb collocations. -->
+<!-- Usually in bold font, followed by symbol "¶". -->
+<!-- In OHEF only. -->
+<!-- <lv> in OHEF. -->
+<!-- Entry of index <filename>_hw.ix (concatenated with <base>) -->
+<!-- TODO: rename to <lv> (after renaming of <lv> to <ln>) -->
+<!-- TODO: <!ELEMENT lh (#PCDATA | ast | pt)* > -->
+
+
+
+<!-- Headwords inside of compound groups -->
+
+
+<!-- Compound -->
+<!-- Darinys -->
+<!-- Headword of compound group. Compound base not shown, replaced by "~". -->
+<!-- Usually in bold font. -->
+<!-- Substitute Compound Word (<scw>) in OHEF. -->
+<!-- <lc> in OHEF is used in meaning of <mc>. -->
+<!-- Entry of index <filename>_hw.ix (concatenated with <base>) -->
+<!-- TODO: rename to <scw>. -->
+<!ELEMENT lc (#PCDATA | hm | ast | pt)* >
+
+<!-- Whole Hidden Compound -->
+<!-- Pilnas paslėptas darinys -->
+<!-- Hidden internal full form of compound headword, without "~", <base> included. OHEF only. -->
+<!-- Entry of index <filename>_hw.ix -->
+<!-- <!ELEMENT hcw (#PCDATA | hm | ast | pt)* > -->
+
+<!-- Whole Compound -->
+<!-- Pilnas Darinys -->
+<!-- Headword of compound group. Full compound text where no "~"-substitution is possible. -->
+<!-- Used instead of <hcw>/<lc>(<scw>) pair, OHEF only. -->
+<!-- Entry of index <filename>_hw.ix -->
+<!-- <!ELEMENT cw (#PCDATA | hm | ast | pt)* > -->
+
+
+<!-- Derivative -->
+<!-- Išvestinis žodis -->
+<!-- Headword of derivative group. -->
+<!-- Usually in bold font. -->
+<!-- Entry of index <filename>_hw.ix (concatenated with <base>) -->
+<!ELEMENT ld (#PCDATA | hm | ast | pt)* >
+
+
+<!-- Structure -->
+<!-- Junginys -->
+<!-- Collocation phrase - headword of structure group. -->
+<!-- Usually in bold font. -->
+<!-- Entry of index <filename>_hw.ix (concatenated with <base>) -->
+<!ELEMENT ls (#PCDATA | hm | ast | pt)* >
+
+<!-- Obligatory Structure -->
+<!-- Privalomas junginys -->
+<!-- Used when headword is used in collocation only, no meaning for single headword. -->
+<!-- Usually in bold font. -->
+<!-- Entry of index <filename>_hw.ix (concatenated with <base>) -->
+<!ELEMENT lo (#PCDATA | hm | ast | pt)* >
+
+
+<!-- Subheadword -->
+<!-- Paantraštė -->
+<!-- Common tag used for all possible compounds and collocations - <lc>, <ls>, <ld>, etc. -->
+<!-- Actuall meaning depends on enveloping group tag. Used for the sake of tag economy. -->
+<!-- Usually in bold font. -->
+<!-- Entry of index <filename>_hw.ix (concatenated with <base>) -->
+<!ELEMENT lw (#PCDATA | hm | ast | pt)* >
+
+
+<!-- Parent word -->
+<!-- Darinio kilmė -->
+<!-- Parrent word of a compound - reference to <cw> from inside of partial compound group. -->
+<!-- OHEF only. -->
+<!-- <!ELEMENT lw (#PCDATA | hm | ast | pt)* > -->
+
+
+<!-- Phrasal Verb Pattern -->
+<!-- Veiksmažodinis junginys -->
+<!-- Phrasal verb pattern text - a phrase using preceeding <lh>. -->
+<!-- Headword inside of <pvp> group. -->
+<!-- Like <ls>, but used for phrasal verb pattern collocations. -->
+<!-- In OHEF only. -->
+<!-- Entry of index <filename>_hw.ix (concatenated with <base>) -->
+<!-- TODO: <!ELEMENT lp (#PCDATA | ast | pt)* > -->
+
+
+<!-- Noun Modifier (headword) -->
+<!-- Daiktavardinis junginys (antraštė) -->
+<!-- Noun modifier compound text - rest of the compound without the base. -->
+<!-- Headword inside of <mg> group. -->
+<!-- <lc> in OHEF -->
+<!-- Entry of index <filename>_hw.ix (concatenated with <base>) -->
+<!-- TODO: rename to <lc>, when <lc> will be renamed to <scw>. -->
+<!ELEMENT mc (#PCDATA | pt)* >
+
+<!-- Noun Modifier (translation) -->
+<!-- Daiktavardinis junginys (atitikmuo) -->
+<!-- Translation of <mc>. -->
+<!-- Entry of index <filename>_tw.ix (concatenated with <base> translation?) -->
+<!ELEMENT md (#PCDATA | pt)* >
+
+
+
+<!-- Collocator (headword) -->
+<!-- Kontekstas (antraštės) -->
+<!-- Accompanying words, usually used with the headword, something like <mc>. -->
+<!-- OHEF: Collocates may be called 'usual objects'. Collocators are words that naturally associate with/complement the headword (usually a verb, never a noun). -->
+<!-- Usually in italic font. -->
+<!-- Look <la>, <ic>, etc. -->
+<!ELEMENT co (#PCDATA | pt | ct)* >
+
+<!-- Collocator (translation) -->
+<!-- Kontekstas (atitikmens) -->
+<!-- Usually in italic font. -->
+<!ELEMENT cd (#PCDATA | pt | ct)* >
+
+
+
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Example Group -->
+<!-- Pavyzdžio grupė -->
+<!-- Example - phrase or sentence demonstrating direct meaning of the headword. -->
+<!ELEMENT eg ((ct | cn | ps | gr | ic)*, le? , (pr | ic)*, ps?, (la | co | ic | pt)*, (s2* | s3* | tg* | xr?)) >
+
+<!-- Example Group (forced) -->
+<!-- Pavyzdžio grupė (forsuota) -->
+<!-- Example group displayed even in short mode of entry display. -->
+<!-- Used in entries without direct translation of the headword. -->
+<!ELEMENT egf ((ct | cn | ps | gr | ic)*, le? , (pr | ic)*, ps?, (la | co | ic | pt)*, (s2* | s3* | tg* | xr?)) >
+
+<!-- Example -->
+<!-- Pavyzdys -->
+<!-- Head of example group - (longer) phrase or sentence. -->
+<!ELEMENT le (#PCDATA | pp | ic | pt | ct | cn)* >
+
+<!-- Usage -->
+<!-- Vartosena -->
+<!-- Some kind of example, short phrase, difference in preceding delimiters. -->
+<!ELEMENT lu (#PCDATA | pp | ic | pt | ct | cn)* >
+
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Idiom Group -->
+<!-- Frazeologizmo grupė -->
+<!-- Idiom - phrase or sentence having settled figurative, metaphoric, poethical meaning. -->
+<!ELEMENT id ((li | cn)*, (la | co | ic | pt)*, tg*, xr?) >
+<!-- <id nl=n>? OHEF only. -->
+<!-- <!ATTLIST id nl CDATA #IMPLIED> -->
+
+<!-- Idiom -->
+<!-- Frazeologizmas -->
+<!-- Head of idiom group. -->
+<!ELEMENT li (#PCDATA | pp | pt | cn)* >
+
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Translation Group -->
+<!-- Atitikmens grupė -->
+<!-- Translation of any heading group - <hg>, <cg>, <dg>, <sg>, <eg>, <id>. -->
+<!ELEMENT tg ((la | co | ic | pt | tw)*, la?, co?, (ct | cn | ps | gr | ic)*, pp*, (fg | pr | ic)*, (ic | pt)?, xr?) >
+
+<!-- Translation -->
+<!-- Atitikmuo -->
+<!-- Text of translation. -->
+<!-- Usually in normal font. -->
+<!-- Entry of index <filename>_tw.ix -->
+<!-- ELEMENT tw (#PCDATA | xr | pt | ct | cn)* -->
+<!ELEMENT tw (#PCDATA | xr | ic | pt | ct | cn)* >
+<!-- Translation language indicator <tw lang="en"> (de, fr, lt, pl, ru) -->
+<!ATTLIST tw lang CDATA #IMPLIED>
+
+<!-- Example Translation -->
+<!-- Pavyzdžio atitikmuo -->
+<!ELEMENT te (#PCDATA | xr | ic | pt | ct | cn)* >
+
+<!-- Idiom Translation -->
+<!-- Frazeologizmo atitikmuo -->
+<!ELEMENT ti (#PCDATA | xr | ic | pt | ct | cn)* >
+
+
+<!-- Translation texts in multilanguage dictionaries -->
+<!-- <!ATTLIST tw lang CDATA #REQUIRED> should be used instead. -->
+
+<!-- English Translation -->
+<!-- Angliškas atitikmuo -->
+<!ELEMENT twe (#PCDATA | xr | ic | pt | ct | cn)* >
+
+<!-- French Translation -->
+<!-- Prancūziškas atitikmuo -->
+<!ELEMENT twf (#PCDATA | xr | ic | pt | ct | cn)* >
+
+<!-- German Translation -->
+<!-- Vokiškas atitikmuo -->
+<!ELEMENT twg (#PCDATA | xr | ic | pt | ct | cn)* >
+
+<!-- Lithuanian Translation -->
+<!-- Lietuviškas atitikmuo -->
+<!ELEMENT twl (#PCDATA | xr | ic | pt | ct | cn)* >
+
+<!-- Polish Translation -->
+<!-- Lenkiškas atitikmuo -->
+<!ELEMENT twp (#PCDATA | xr | ic | pt | ct | cn)* >
+
+<!-- Russian Translation -->
+<!-- Rusiškas atitikmuo -->
+<!ELEMENT twr (#PCDATA | xr | ic | pt | ct | cn)* >
+
+
+
+<!-- Gloss -->
+<!-- Interpretacija -->
+<!-- Interpretation, alternative translation or supplement to translation. -->
+<!ELEMENT gl (#PCDATA | xr | ic | pt | ct | cn)* >
+
+
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Usage Notes (source) -->
+<!-- Vartojimo pastabos (originalo kalba) -->
+<!-- Headword explanation, word usege region, additional information about the headword. -->
+<!-- In headword language. -->
+<!ELEMENT un (#PCDATA | xr | pt | ct | cn)* >
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Usage Notes (translation) -->
+<!-- Vartojimo pastabos (vertimo kalba) -->
+<!-- Word usage notes in translation language. -->
+<!ELEMENT us (#PCDATA | xr | pt | ct | cn)* >
+
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Function Word Notes -->
+<!-- Funkcinės pastabos -->
+<!-- Notes on word translation, control etc. -->
+<!ELEMENT fun (#PCDATA | xr | pt | ct | cn)* >
+
+<!-- Technical Notes -->
+<!-- Techninės pastabos -->
+<!-- Hidden technical editorial notes - word source, editor name, date of correction, etc. -->
+<!-- OHEF: temporary details used for queries or bringing points to a senior editor's attention. -->
+<!ELEMENT ed (#PCDATA | xr | pt | ct | cn)* >
+
+<!-- Annotation -->
+<!-- Anotacija -->
+<!-- Hidden technical details for future research. -->
+<!-- OHEF only. -->
+<!-- <!ELEMENT ann (#PCDATA | xr | pt | ct | cn)* > -->
+
+
+<!-- Common subtags - - - - - - - - - - - - - - - - - -->
+
+<!-- Homonym Number -->
+<!-- Homonimo numeris -->
+<!-- Homonym (Homograph) number of the headword or reference -->
+<!-- Homonyms - identically spelled headwords with totally different meaning. -->
+<!-- Enterred usually to different dictionary entries, marking them by indexes <hm>. -->
+<!-- Upper index after the word. -->
+<!ELEMENT hm (#PCDATA) >
+
+
+<!-- Pronunciation - - - - - - - - - - - - - - - - - -->
+
+<!-- Pronunciation Group -->
+<!-- Tarimo grupė -->
+<!-- Phonetics and related information. -->
+<!ELEMENT pr (ph | pd | ct)* >
+
+<!-- Pronunciation -->
+<!-- Tarimas -->
+<!-- Usually IPA transliterated characters based on the Alvey group's recommended notation. -->
+<!ELEMENT ph (#PCDATA | pt)* >
+
+<!-- Pronunciation (reduced) -->
+<!-- Tarimas (redukuotas) -->
+<!-- Reduced part of pronunciation. -->
+<!-- Displayed in smaller font. -->
+<!ELEMENT pd (#PCDATA | pt)* >
+
+
+<!-- Morphology, syntax - - - - - - - - - - - - - - - - - -->
+
+<!-- Part Of Speech (headword) -->
+<!-- Kalbos dalis (antraštės) -->
+<!-- Part of speech, grammatical category  name of the headword, -->
+<!--    grammatical form name of the grammatical form -->
+<!-- Usually in italic font. -->
+<!-- Entry of index <filename>_la.ix -->
+<!ELEMENT ps (#PCDATA) >
+
+<!-- Part Of Speech (translation) -->
+<!-- Kalbos dalis (atitikmens) -->
+<!-- Part of speech, grammatical category name of the translation. -->
+<!-- OHEF: other wider grammatical related explanationary text. -->
+<!-- Usually in italic font. -->
+<!-- Entry of index <filename>_la.ix -->
+<!ELEMENT gr (#PCDATA) >
+
+
+<!-- Conjugation paradigm -->
+<!-- Asmenuotė -->
+<!-- Number of the rule table of the verb conjugation. -->
+<!-- OHEF only. -->
+<!-- TODO: <!ELEMENT xt (#PCDATA) > -->
+
+<!-- Declension paradigm -->
+<!-- Linksniuotė -->
+<!-- Number of the rule table of the noun declension. -->
+<!-- TODO: <!ELEMENT ??? (#PCDATA) > -->
+
+<!-- Stress Paradigm Group -->
+<!-- Kirčiuotės grupė -->
+<!ELEMENT ag (ac) >
+
+<!-- Stress Paradigm -->
+<!-- Kirčiuotė -->
+<!-- Number of the rule table of the accentuation -->
+<!ELEMENT ac (#PCDATA) >
+
+
+
+<!-- Asterisk -->
+<!-- Žvaigždutė -->
+<!-- (German) strong verbs indicator, displayed as "*". -->
+<!ELEMENT ast EMPTY >
+
+<!-- Uncountable -->
+<!-- Nekaitomas skaičiais -->
+<!-- Only singular or only plural word indicator, displayed as "¢". -->
+<!-- Opposite to <cnt/>. -->
+<!ELEMENT uc EMPTY >
+
+<!-- Countable -->
+<!-- Kaitomas skaičiais -->
+<!-- Displayed as "c". -->
+<!-- Opposite to <uc/>. -->
+<!ELEMENT cnt EMPTY >
+
+
+<!-- Preposition Group -->
+<!-- Valdymo grupė -->
+<!-- Standard prepositions and grammatical form names (<ps>, <gr>). -->
+<!ELEMENT pp (sp | ct)* >
+
+<!-- Preposition (headword) -->
+<!-- Valdymas (antraštės) -->
+<!-- Preposition, conjunction, infinitive, which can be used with the headword. -->
+<!-- Usually in italic font. -->
+<!-- entry of index <filename>_la.ix -->
+<!ELEMENT sp (#PCDATA) >
+
+<!-- Preposition (translation) -->
+<!-- Valdymas (atitikmens) -->
+<!-- Preposition, conjunction, infinitive, which can be used with the translation. -->
+<!-- Usually in italic font. -->
+<!-- Entry of index <filename>_la.ix -->
+<!ELEMENT dp (#PCDATA) >
+
+
+<!-- Form Group (headword) -->
+<!-- Formų grupė (antraštės) -->
+<!-- Group of grammatical (plural, gender, conjugational, and reflexive) forms -->
+<!--    and theyr names (<ps>, <gr>). -->
+<!ELEMENT fg (fs | ps | pr | ic | ct | la | pt)* >
+ 
+<!-- Grammatical Form (headword) -->
+<!-- Gramatinė forma (antraštės) -->
+<!-- OHEF: Semibold Form -->
+<!-- Grammatical form text of the headword. -->
+<!-- Usually in bold font. -->
+<!-- Entry of index <filename>_hw.ix (in case of full word form, when not only ending entered) -->
+<!ELEMENT fs (#PCDATA | pt)* >
+
+<!-- Form Group (translation) -->
+<!-- Formų grupė (atitikmens) -->
+<!ELEMENT fd (f | ps | pr | dc | ct | la | pt)* >
+ 
+<!-- Grammatical Form (translation) -->
+<!-- Gramatinė forma (atitikmens) -->
+<!-- OHEF: Bold Form -->
+<!-- Gram. form text of the translation. -->
+<!-- Usually in normal font. -->
+<!-- Entry of index <filename>_hw.ix (in case of full word form, when not only ending entered) -->
+<!ELEMENT f (#PCDATA | pt)* >
+
+
+<!-- Semantic - - - - - - - - - - - - - - - - - -->
+
+<!-- Label -->
+<!-- Pažyma -->
+<!-- Word semantical usage region, area of application, usage field, style or nationality in form of strict identifier (sport., pej., etc.) -->
+<!-- Some single tags have meaning of labels too (<obs/>, <sim/>, atc.). -->
+<!-- Usually in italic font. -->
+<!-- Entry of index <filename>_la.ix -->
+<!ELEMENT la (#PCDATA) >
+
+
+<!-- Archaic -->
+<!-- Senovinis -->
+<!-- Archaic word indicator, displayed as simbol "‡". -->
+<!ELEMENT arc EMPTY >
+
+<!-- Obsolete -->
+<!-- Pasenęs -->
+<!-- Obsolete word indicator, displayed as simbol "†". -->
+<!ELEMENT obs EMPTY >
+
+<!-- Informal -->
+<!-- Šnekamoji kalba -->
+<!-- Familiarus? -->
+<!-- Informal speach indicator, displayed as simbol "○". -->
+<!ELEMENT if EMPTY >
+
+<!-- Very Informal -->
+<!-- Grubi kalba -->
+<!-- Very informal, rude speach indicator, displayed as simbol - half painted circle. -->
+<!ELEMENT vif EMPTY >
+
+<!-- Vulgar -->
+<!-- Keiksmažodžiai -->
+<!-- Vulgar or tabu sentence. Displayed as "●" -->
+<!ELEMENT vul EMPTY >
+
+
+<!-- Explanation (source) -->
+<!-- Paaiškinimas (originalo kalba) -->
+<!-- Explanationary notes, describing usage of word in dictionary headword language. -->
+<!-- Usually in italic font. -->
+<!ELEMENT ic (#PCDATA | xr | pt | ct | ps | gr)* >
+
+<!-- Explanation (forced) -->
+<!-- Paaiškinimas (forsuotas) -->
+<!-- Explanation to be displayed in short output format - for entries without any translations or examples. -->
+<!-- Usually in italic font. -->
+<!ELEMENT icf (#PCDATA | xr | pt | ct | ps | gr)* >
+
+<!-- Explanation (normal) -->
+<!-- Paaiškinimas (normalus) -->
+<!-- Explanationary notes in normal font. -->
+<!-- Could be entered as part of <vn> or <tw>. -->
+<!ELEMENT in (#PCDATA | xr | pt | ct | ps | gr)* >
+
+<!-- Explanation (translation) -->
+<!-- Paaiškinimas (vertimo kalba) -->
+<!-- Explanationary notes in destination language. -->
+<!-- Usually in italic font. -->
+<!ELEMENT dc (#PCDATA | xr | pt | ct | ps | gr)* >
+
+
+
+<!-- Punctuation, font styles - - - - - - - - - - - - - - - - - -->
+
+<!-- Punctuator -->
+<!-- Skirtukas -->
+<!-- Non standard punctuation marcs - ",", ";", etc. -->
+<!-- Standard punctuators should not be saved in the source file - they are added by the output procedures. -->
+<!ELEMENT cp (#PCDATA) >
+
+<!-- Parentheses -->
+<!-- Skliaustai -->
+<!-- Kind of punctuators - parentheses enveloping other tags. -->
+<!ELEMENT pt (#PCDATA | v | vn | ast | xr | ic | la | co | ps | pp | gr | fg | ct | cn | pt)* >
+
+
+<!-- Similar -->
+<!-- Panašu -->
+<!-- Similar meaning indicator, displayed as simbol "=". -->
+<!-- Before enumeration of synonyms? -->
+<!ELEMENT sim EMPTY >
+
+<!-- Approximately -->
+<!-- Apytiksliai -->
+<!-- Approximate meaning indicator, displayed as simbol "≈" or "-̃". -->
+<!ELEMENT apr EMPTY >
+
+<!-- Relatives -->
+<!-- Artimieji -->
+<!-- Indicator preceding references to relative words. -->
+<!-- In RLZ displayed as double vertical dash "||". -->
+<!ELEMENT rel EMPTY >
+
+
+<!-- Line Break -->
+<!-- Eilutės laužimas -->
+<!-- Typesetting symbol, should be deleted before start of typesetting of new project. -->
+<!ELEMENT br EMPTY>
+
+<!-- Paragraph -->
+<!-- Pastraipa -->
+<!-- Usually only inside of large notes text tags - <un>, <fun>, etc. -->
+<!ELEMENT p (#PCDATA | pt | ct | hl | sb | i )* >
+
+<!-- Paragraph (functional notes) -->
+<!-- Pastraipa (funkcinėse pastabose) -->
+<!-- The same as <p>, but inside of <fun>. OHEF only. -->
+<!-- <!ELEMENT fp (#PCDATA | pt | ct | hl | sb | i )* > -->
+
+<!-- Paragraph (usage notes) -->
+<!-- Pastraipa (vartojimo pastabose) -->
+<!-- The same as <p>, but inside of <un>. OHEF only. -->
+<!-- <!ELEMENT para (#PCDATA | pt | ct | hl | sb | i )* > -->
+
+
+<!-- Enumeration Group -->
+<!-- Išvardinimo grupė -->
+<!-- Group consisting of enumerated paragraphs <en>. -->
+<!ELEMENT ng (en)* >
+
+<!-- Enumeration -->
+<!-- Išvardinimas -->
+<!-- Enumerated paragraph preceded by number, bullet, etc. -->
+<!ELEMENT en (#PCDATA) >
+<!-- "<en num="">", if num is not "" - additional space should be added after it in delimiter: -->
+<!-- <en num="-"><cp>&nbsp;</cp>[...]</en> -->
+<!-- <en num="*"><cp>&nbsp;</cp>[...]</en> -->
+<!-- <en num="1."><cp>&nbsp;</cp>[...]</en> -->
+<!ATTLIST en num CDATA #IMPLIED>
+
+
+<!-- Table -->
+<!-- Lentelė -->
+<!ELEMENT table (#PCDATA) >
+<!-- <table border="1" bgcolor="#FFFFFF" ncols="4" width1=".9cm" width2="2.5cm" width3="1.6cm" width4="2.cm"> -->
+<!ATTLIST border num CDATA #IMPLIED>
+<!ATTLIST bgcolor num CDATA #IMPLIED>
+<!ATTLIST ncols num CDATA #IMPLIED>
+<!ATTLIST width1 num CDATA #IMPLIED>
+<!ATTLIST width2 num CDATA #IMPLIED>
+<!ATTLIST width3 num CDATA #IMPLIED>
+<!ATTLIST width4 num CDATA #IMPLIED>
+<!ATTLIST width5 num CDATA #IMPLIED>
+<!ATTLIST width6 num CDATA #IMPLIED>
+<!ATTLIST width7 num CDATA #IMPLIED>
+<!ATTLIST width8 num CDATA #IMPLIED>
+<!ATTLIST width9 num CDATA #IMPLIED>
+
+<!-- Table row -->
+<!-- Lentelės eilutė -->
+<!ELEMENT tr (#PCDATA) >
+
+<!-- Table cell -->
+<!-- Lentelės langelis -->
+<!ELEMENT td (#PCDATA) >
+
+
+<!-- Roman -->
+<!-- Normalus -->
+<!-- Normal typeface text segment. OHEF only. -->
+<!-- <!ELEMENT r (#PCDATA | pt | ct)* > -->
+
+<!-- Highlighted -->
+<!-- Paryškintas -->
+<!-- Emphasized text segment, usually only inside of large notes text tags - <un>, <fun>, etc. -->
+<!-- Bold typeface. -->
+<!ELEMENT hl (#PCDATA | pt | ct)* >
+
+<!-- Highlighted (functional notes) -->
+<!-- Paryškintas (funkcinėse pastabose) -->
+<!-- The same as <hl>, but inside of <fun>. OHEF only. -->
+<!-- <!ELEMENT fhl (#PCDATA | pt | ct)* -->
+
+<!-- Semibold -->
+<!-- Pusjuodis -->
+<!-- Semibold typeface text segment, usually only inside of large notes text tags - <un>, <fun>, etc. -->
+<!ELEMENT sb (#PCDATA | pt | ct)* >
+
+<!-- Italic -->
+<!-- Kursyvas -->
+<!-- Italic typeface text segment, usually only inside of large notes text tags - <un>, <fun>, etc. -->
+<!ELEMENT i (#PCDATA | pt | ct)* >
+
+<!-- Italic (functional notes) -->
+<!-- Kursyvas (funkcinėse pastabose) -->
+<!-- The same as <i>, but inside of <fun>. OHEF only. -->
+<!-- <!ELEMENT fi (#PCDATA | pt | ct)* > -->
+
+<!-- Universe -->
+<!-- Universe -->
+<!-- Universe typeface, OHEF only. -->
+<!-- <!ELEMENT u (#PCDATA | pt | ct)* > -->
+
+<!-- Superscript -->
+<!-- Indeksas viršuje -->
+<!ELEMENT su (#PCDATA | pt | ct)* >
+
+<!-- Subscript -->
+<!-- Indeksas apačioje -->
+<!ELEMENT sub (#PCDATA | pt | ct)* >
+
+
+<!-- Technical Text -->
+<!-- Įterptinis žodis -->
+<!-- Conjunctions, abbreviations etc. -->
+<!-- Usually in italic font. -->
+<!ELEMENT ct (#PCDATA) >
+
+<!-- Technical Text (normal font) -->
+<!-- Įterptinis žodis (normaliu šriftu). -->
+<!ELEMENT cn (#PCDATA) >
+
+
+<!-- Special -->
+<!-- Vidinės komandos -->
+<!-- A set of internal typesetting commands to low level formatter (TeX, RTF, PS, PDFMARK, JavaScript, etc.). -->
+<!-- Contents of the tag are taken over intact to the low level typesetting program. -->
+<!ELEMENT sl (#PCDATA) >
+<!-- <sl lang="TeX"> -->
+<!-- <sl lang="JavaScript"> -->
+<!-- May be "language", like in HTML? -->
+<!ATTLIST lang num CDATA #IMPLIED>
+
+
+<!-- Level Group -->
+<!-- Lygmens grupė -->
+<!-- Group of tags, belonging to different dictionary level, than enveloping group tag. -->
+<!ELEMENT lg (#PCDATA | v | vn | ast | xr | ic | la | co | ps | pp | gr | fg | ct | cn | pt)* >
+
+<!-- Level -->
+<!-- Lygmuo -->
+<!-- Dictionary output level, used for output of different difficulty dictionaries using the same word database. -->
+<!-- TODO: rename to <ln>. -->
+<!ELEMENT lv (#PCDATA) >
+
+
+<!-- Null -->
+<!-- Nieko -->
+<!-- Void tag, used for internal technical purposes -->
+<!--    (for definition of delimitters before or after all tags, for example). -->
+<!-- Should be present in all projects. -->
+<!ELEMENT nul EMPTY >
+
+<!-- Text -->
+<!-- Tekstas -->
+<!-- Internal tag used for technical purposes - for defining of simply untagged text in delimiter definitions, for example. -->
+<!-- Equivalent of #PCDATA -->
+<!-- Should be present in all projects. -->
+<!ELEMENT tx (#PCDATA) >
+
+<!-- Symbol -->
+<!-- Simbolis -->
+<!-- Tag of technical purposes - for entering of special characters in special font in some cases. -->
+<!-- Also could supersede some single tags - semantical identificators (<obs/> - "†", <sim/> - "=", etc.). -->
+<!ELEMENT symb (#PCDATA) >
+
+
+
+<!-- References - - - - - - - - - - - - - - - - - - -->
+
+<!-- Reference -->
+<!-- Nuoroda -->
+<!-- Cross reference to the other entry of the dictionary. -->
+<!-- Tag text - external entry headword <hw>. -->
+<!-- Could consist of several subtags, external headword then - inside of <xt> tag. -->
+<!-- Usually in bold font. -->
+<!ELEMENT xr (#PCDATA | x | hm | h | ast | pt | ct)* >
+<!-- reference point in URL form "[[[//{domain}/]{path}/]{filename}.xml]#{se_id}" -->
+<!-- {se_id} - value of id attribute of refering <se> entry -->
+<!-- elements "//<domain>", "/<path>" and "/<filename>.xml" are optional -->
+<!-- for example: <xr href="|12345"> <xr href="//www.dic.com/files/dictionary.xml|12345" class="entry"> -->
+<!-- obsolete, HTML like notation: <xr href="#12345"> <xr href="//www.dic.com/files/dictionary.xml#12345"> -->
+<!ATTLIST xr href CDATA #IMPLIED>
+<!-- class="entry" means, that reference points to real entry -->
+<!ATTLIST xr class CDATA #IMPLIED>
+
+<!-- Passive Reference -->
+<!-- Pasyvi nuoroda -->
+<!-- Informational, inactive variant of <xr> - a reference will be not activated as a real hypertext reference. -->
+<!ELEMENT xrx (#PCDATA | x | hm | h | ast | pt | ct)* >
+
+<!-- Reference (functional notes) -->
+<!-- Nuoroda (funkcinėse pastabose) -->
+<!-- Reference inside of <fun>. OHEF only. -->
+<!-- Sometimes used as <x>? -->
+<!-- TODO: remove, use <xr> instead. -->
+<!ELEMENT fx (#PCDATA | hm | ast | pt | ct)* >
+
+<!-- Reference Text -->
+<!-- Nuorodos tekstas -->
+<!-- Subtag of <xr> - the reference word itself, some kind of <tx> tag for references. -->
+<!-- Tag text - headword <hw> of external referenced entry. -->
+<!-- Usually in bold font. -->
+<!ELEMENT x (#PCDATA | hm | ast | pt | ct)* >
+
+<!-- Homonym Reference -->
+<!-- Homonimo nuoroda -->
+<!-- Homonym number of the reference. Usually <hm> is used instead of <h>. -->
+<!-- Upper index after the word -->
+<!-- Subtag of <xr>. -->
+<!ELEMENT h (#PCDATA) >
+
+<!-- Number Reference -->
+<!-- Numerio nuoroda -->
+<!-- When used together with <x> - reference to the grammatical or semantic category number of referenced word -->
+<!--    (attribute "num" of tags <s1>, <s2>, etc.). -->
+<!-- Also could point to semantical number <nr> - order number in the table (when used with <t> tag). -->
+<!-- Subtag of <xr>. -->
+<!-- Usually in bold font. -->
+<!ELEMENT xs (#PCDATA | hm | ast | pt | ct)* >
+
+<!-- Page Reference -->
+<!-- Puslapio nuoroda -->
+<!-- Reference to the page number with the referenced text, table, etc. -->
+<!-- Could point to value of tag <tn> of referenced entry. -->
+<!-- OHEF: reference to global usage note, short name of that usage note-table, followed by a page number? Actually the same, as <t>. -->
+<!-- Subtag of <xr>. -->
+<!ELEMENT n (#PCDATA) >
+
+<!-- Table Reference -->
+<!-- Lenteles nuoroda -->
+<!-- Reference to external table object (list of values with explanations, translations, etc.), tag value - table heading. -->
+<!-- Subtag of <xr>. -->
+<!ELEMENT t (#PCDATA) >
+
+
+
+<!-- Synonym Reference Group -->
+<!-- Sinonimų nuorodų grupė -->
+<!-- Group of references - synonyms of the headword. -->
+<!-- In AKLZ displayed with preceding "Žr. dar". -->
+<!ELEMENT xyg (#PCDATA | xy | hm | h | ast | pt | ct)* >
+<!-- Synonym Reference -->
+<!-- Sinonimo nuoroda -->
+<!ELEMENT xy (#PCDATA | x | hm | h | ast | pt | ct)* >
+
+<!-- Secondary Synonym Reference Group -->
+<!-- Antrinių sinonimų nuorodų grupė -->
+<!-- Group of references - synonyms of the headword, where the headword is main usage form of the word. -->
+<!-- In AKLZ displayed with preceding "Dar vartojama". -->
+<!ELEMENT xcg (#PCDATA | xc | hm | h | ast | pt | ct)* >
+<!-- Secondary Synonym Reference -->
+<!-- Antrinio sinonimo nuoroda -->
+<!ELEMENT xc (#PCDATA | x | hm | h | ast | pt | ct)* >
+
+<!-- Primary Synonym Reference Group -->
+<!-- Pirminio sinonimo nuorodos grupė -->
+<!-- Group of reference to the main usage form of the headword. -->
+<!-- In AKLZ displayed with preceding "Žr.". -->
+<!ELEMENT xpg (#PCDATA | xp | hm | h | ast | pt | ct)* >
+<!-- Primary Synonym Reference -->
+<!-- Pirminio sinonimo nuoroda -->
+<!ELEMENT xp (#PCDATA | x | hm | h | ast | pt | ct)* >
+
+<!-- Antonym Reference Group -->
+<!-- Antonimų nuorodų grupė -->
+<!-- Group of references - antonyms of the headword or words with contrasting meaning. -->
+<!-- In AKLZ displayed with preceding "Plg.". -->
+<!ELEMENT xag (#PCDATA | xa | hm | h | ast | pt | ct)* >
+<!-- Antonym Reference -->
+<!-- Antonimo nuoroda -->
+<!ELEMENT xa (#PCDATA | x | hm | h | ast | pt | ct)* >
+
+<!-- Example Reference Group -->
+<!-- Pavyzdžių nuorodų grupė -->
+<!-- Group of references - explanatory examples of usage region of the headword. -->
+<!-- In case if the headword is a general description of set of partial objects. --> 
+<!-- In AKLZ displayed with preceding "Pavyzdžiai:". -->
+<!ELEMENT xeg (#PCDATA | xe | hm | h | ast | pt | ct)* >
+<!-- Example Reference Group (single) -->
+<!-- Pavyzdžio nuorodos grupė -->
+<!-- Like <xeg> but with only one reference. -->
+<!-- In AKLZ displayed with preceding "Pavyzdys:". -->
+<!ELEMENT xng (#PCDATA | xe | hm | h | ast | pt | ct)* >
+<!-- Example Reference -->
+<!-- Pavyzdžio nuoroda -->
+<!ELEMENT xe (#PCDATA | x | hm | h | ast | pt | ct)* >
+
+
+<!-- Objects, includes - - - - - - - - - - - - - - - - - - -->
+
+<!-- Code Example -->
+<!-- Kodo pavyzdys -->
+<!-- Programing language code example text. -->
+<!-- Usually in typewriter font. -->
+<!ELEMENT cl (#PCDATA) >
+
+<!-- Code Example (inline) -->
+<!-- Kodo pavyzdys (tekste) -->
+<!-- Programing language code example text inside of other paragraph, no newlines will be output. -->
+<!-- Usually in typewriter font. -->
+<!ELEMENT ce (#PCDATA) >
+
+<!-- Keyword -->
+<!-- Bazinis žodis -->
+<!-- Programing language operator name. -->
+<!-- Usually in bold typewriter font. -->
+<!ELEMENT cb (#PCDATA) >
+
+
+<!-- Equiation -->
+<!-- Formulė -->
+<!-- Formula text or reference to an external file with equiation description. -->
+<!-- In case of external reference - empty single tag. -->
+<!ELEMENT eq (#PCDATA | su | pt)* >
+<!-- Attribute src - name of the formula file without extension: <eq src="e0001001"/>. -->
+<!-- File formats and generated extensions depend on project and output format, -->
+<!--    could be image (.pcx, .eps, .bmp, .jpg, .gif, etc., look <img/> tag), TeX file segment (.tex), MathML file segment, etc. -->
+<!ATTLIST eq src CDATA #IMPLIED>
+
+<!-- Equiation (inline) -->
+<!-- Formulė (tekste) -->
+<!-- Equiation inside of other paragraph, no newlines will be output. -->
+<!ELEMENT el EMPTY >
+<!ATTLIST el src CDATA #IMPLIED>
+
+<!-- Image -->
+<!-- Iliustracija -->
+<!-- Look <eq>. -->
+<!ELEMENT img EMPTY >
+<!ATTLIST img src CDATA #IMPLIED>
+
+<!-- - - - - - - - - - - - - - - - - - -->
+<!-- Objects -->
+
+<!ENTITY space " " >
+<!ENTITY exclam "!" >
+<!ENTITY excl "!" >
+<!-- ENTITY quot """  !!! -->
+<!ENTITY hash "#" >
+<!ENTITY dlr "$" >
+<!ENTITY dollar "$" >
+<!-- ENTITY pct "%"  !!!??? -->
+<!-- ENTITY percnt "%"  !!!??? -->
+<!-- ENTITY amp "&"  !!! -->
+<!ENTITY apos "'" >
+<!ENTITY lparen "(" >
+<!ENTITY lpar "(" >
+<!ENTITY rparen ")" >
+<!ENTITY rpar ")" >
+<!ENTITY ast "*" >
+<!ENTITY plus "+" >
+<!ENTITY comma "," >
+<!ENTITY hyph "-" >
+<!ENTITY hyphen "-" >
+<!ENTITY dash "-" >
+<!ENTITY minus "-" >
+<!ENTITY per "." >
+<!ENTITY period "." >
+<!ENTITY fwsl "/" >
+<!ENTITY sol "/" >
+<!ENTITY d0 "0" >
+<!ENTITY d1 "1" >
+<!ENTITY d2 "2" >
+<!ENTITY d3 "3" >
+<!ENTITY d4 "4" >
+<!ENTITY d5 "5" >
+<!ENTITY d6 "6" >
+<!ENTITY d7 "7" >
+<!ENTITY d8 "8" >
+<!ENTITY d9 "9" >
+<!ENTITY colon ":" >
+<!ENTITY semi ";" >
+<!ENTITY lt "‹" > <!-- !!! -->
+<!ENTITY eq "=" >
+<!ENTITY equals "=" >
+<!ENTITY gt "›" > <!-- !!! -->
+<!ENTITY ques "?" >
+<!ENTITY quest "?" >
+
+<!ENTITY at "@" >
+<!ENTITY commat "@" >
+
+<!ENTITY lsq "[" >
+<!ENTITY lsqb "[" >
+<!ENTITY bksl "\" > <!-- !!! -->
+<!ENTITY bsol "\" > <!-- !!! -->
+<!ENTITY rsq "]" >
+<!ENTITY rsqb "]" >
+<!ENTITY crt "^" >
+<!ENTITY hbar "_" >
+<!ENTITY lowbar "_" >
+
+<!ENTITY grav "`" >
+
+<!ENTITY lcb "{" >
+<!ENTITY lcub "{" >
+<!ENTITY bar "|" >
+<!ENTITY verbar "|" >
+<!ENTITY rcb "}" >
+<!ENTITY rcub "}" >
+<!ENTITY til "~" >
+
+<!ENTITY AElig "Æ" >
+<!ENTITY aelig "æ" >
+<!ENTITY OElig "Œ" >
+<!ENTITY oelig "œ" >
+<!ENTITY IJlig "Ĳ" >
+<!ENTITY ijlig "ĳ" >
+<!ENTITY szlig "ß" >
+
+<!ENTITY Agr "Α" >
+<!ENTITY Alpha "Α" >
+<!ENTITY Bgr "Β" >
+<!ENTITY Beta "Β" >
+<!ENTITY Ggr "Γ" >
+<!ENTITY Gamma "Γ" >
+<!ENTITY Dgr "Δ" >
+<!ENTITY Delta "Δ" >
+<!ENTITY Egr "Ε" >
+<!ENTITY Epsi "Ε" >
+<!ENTITY Zgr "Ζ" >
+<!ENTITY Zeta "Ζ" >
+<!ENTITY EEgr "Η" >
+<!ENTITY Eta "Η" >
+<!ENTITY THgr "Θ" >
+<!ENTITY Theta "Θ" >
+<!ENTITY Igr "Ι" >
+<!ENTITY Iota "Ι" >
+<!ENTITY Kgr "Κ" >
+<!ENTITY Kappa "Κ" >
+<!ENTITY Lgr "Λ" >
+<!ENTITY Lambda "Λ" >
+<!ENTITY Mgr "Μ" >
+<!ENTITY Mu "Μ" >
+<!ENTITY Ngr "Ν" >
+<!ENTITY Nu "Ν" >
+<!ENTITY Xgr "Ξ" >
+<!ENTITY Xi "Ξ" >
+<!ENTITY Ogr "Ο" >
+<!ENTITY Pgr "Π" >
+<!ENTITY Pi "Π" >
+<!ENTITY Rgr "Ρ" >
+<!ENTITY Rho "Ρ" >
+<!ENTITY Sgr "Σ" >
+<!ENTITY Sigma "Σ" >
+<!ENTITY Sigmav "S" > <!-- !!! -->
+<!ENTITY Tgr "Τ" >
+<!ENTITY Tau "Τ" >
+<!ENTITY Ugr "Υ" >
+<!ENTITY Upsi "Υ" >
+<!ENTITY PHgr "Φ" >
+<!ENTITY Phi "Φ" >
+<!ENTITY KHgr "Χ" >
+<!ENTITY Chi "Χ" >
+<!ENTITY PSgr "Ψ" >
+<!ENTITY Psi "Ψ" > <!ENTITY OHgr "Ω" >
+<!ENTITY Omega "Ω" >
+
+<!ENTITY agr "α" >
+<!ENTITY alpha "α" >
+<!ENTITY bgr "β" >
+<!ENTITY beta "β" >
+<!ENTITY ggr "γ" >
+<!ENTITY gamma "γ" >
+<!ENTITY dgr "δ" >
+<!ENTITY delta "δ" >
+<!ENTITY epsiv "ε" > <!-- curly epsillon -->
+<!ENTITY epsis "ε" > <!-- straight epsillon, like "isin" or russian "є" !!! -->
+<!ENTITY egr "ε" > <!-- straight epsillon, like "isin" or russian "є" !!! -->
+<!ENTITY epsi "ε" > <!-- straight epsillon, like "isin" or russian "є"!!! -->
+<!ENTITY zgr "ζ" >
+<!ENTITY zeta "ζ" >
+<!ENTITY eegr "η" >
+<!ENTITY eta "η" >
+<!ENTITY thetas "θ" > <!-- straight theta -->
+<!ENTITY thetav "θ" > <!-- curly theta !!! -->
+<!ENTITY thgr "θ" > <!-- curly theta !!! -->
+<!ENTITY theta "θ" > <!-- curly theta !!! -->
+<!ENTITY igr "ι" >
+<!ENTITY iota "ι" >
+<!ENTITY kgr "κ" > <!-- straight kappa -->
+<!ENTITY kappa "κ" > <!-- straight kappa -->
+<!ENTITY kappav "κ" > <!-- curly kappa !!! --> 
+<!ENTITY lgr "λ" >
+<!ENTITY lambda "λ" >
+<!ENTITY mgr "μ" >
+<!ENTITY mu "μ" >
+<!ENTITY ngr "ν" >
+<!ENTITY nu "ν" >
+<!ENTITY xgr "ξ" >
+<!ENTITY xi "ξ" >
+<!ENTITY ogr "ο" >
+<!ENTITY pgr "π" > <!-- straight pi -->
+<!ENTITY pi "π" > <!-- straight pi -->
+<!ENTITY piv "π" > <!-- curly pi, like "ω" !!! -->
+<!ENTITY rgr "ρ" > <!-- straight rho -->
+<!ENTITY rho "ρ" > <!-- straight rho -->
+<!ENTITY rhov "ρ" > <!-- curly rho !!! -->
+<!ENTITY sgr "σ" > <!-- inner sigma -->
+<!ENTITY sigma "σ" > <!-- inner sigma -->
+<!ENTITY sigmav "ς" > <!-- final sigma -->
+<!ENTITY sfgr "ς" > <!-- final sigma -->
+<!ENTITY tgr "τ" >
+<!ENTITY tau "τ" >
+<!ENTITY ugr "υ" >
+<!ENTITY upsi "υ" >
+<!ENTITY phgr "φ" > <!-- straight phi, like russian "ф" !!! -->
+<!ENTITY phis "φ" > <!-- straight phi, like russian "ф" !!! -->
+<!ENTITY phi "φ" > <!-- straight phi, like russian "ф" !!! -->
+<!ENTITY phiv "φ" > <!-- curly phi -->
+<!ENTITY khgr "χ" >
+<!ENTITY chi "χ" >
+<!ENTITY psgr "ψ" >
+<!ENTITY psi "ψ" >
+<!ENTITY ohgr "ω" >
+<!ENTITY omega "ω" >
+
+<!ENTITY Gammad "Γ" > <!-- Digamma !!! -->
+<!ENTITY gammad "γ" > <!-- digamma !!! -->
+<!ENTITY Lambdad "Λ" > <!-- Dilambda !!! -->
+<!ENTITY lambdad "λ" > <!-- dilambda !!! -->
+
+<!ENTITY acc "́" >
+<!ENTITY acute "́" >
+<!ENTITY dblac "˝" >
+<!ENTITY ogon "˛" >
+<!ENTITY dot "˙" >
+<!ENTITY caron "ˇ" >
+<!ENTITY mac "ˉ" >
+<!ENTITY macr "ˉ" >
+<!ENTITY uml "¨" >
+<!ENTITY die "¨" >
+<!ENTITY ring "˚" >
+<!ENTITY cd "¸" >
+<!ENTITY cedil "¸" >
+<!ENTITY grave "̀" >
+<!ENTITY circ "ˆ" >
+<!ENTITY tilde "̃" >
+<!ENTITY breve "˘" >
+<!-- "̣" !!! --> 
+ <!ENTITY prime "'" > <!-- strichas prie raides !!! -->
+<!ENTITY Prime "''" > <!-- du strichai !!! -->
+
+<!ENTITY Aogon "Ą" >
+<!ENTITY aogon "ą" >
+<!ENTITY Eogon "Ę" >
+<!ENTITY eogon "ę" >
+<!ENTITY Iogon "Į" >
+<!ENTITY iogon "į" >
+<!ENTITY Uogon "Ų" >
+<!ENTITY uogon "ų" >
+
+<!ENTITY Edot "Ė" >
+<!ENTITY edot "ė" >
+<!ENTITY Zdot "Ż" >
+<!ENTITY zdot "ż" >
+
+<!ENTITY Ccaron "Č" >
+<!ENTITY ccaron "č" >
+<!ENTITY Dcaron "Ď" >
+<!ENTITY dcaron "ď" > <!-- "dˇ" ??? -->
+<!ENTITY Ecaron "Ě" >
+<!ENTITY ecaron "ě" >
+<!ENTITY Lcaron "Ľ" > <!-- "Lˇ" ??? -->
+<!ENTITY lcaron "ľ" > <!-- "lˇ" ??? -->
+<!ENTITY Ncaron "Ň" >
+<!ENTITY ncaron "ň" >
+<!ENTITY Rcaron "Ř" >
+<!ENTITY rcaron "ř" >
+<!ENTITY Scaron "Š" >
+<!ENTITY scaron "š" >
+<!ENTITY Tcaron "Ť" >
+<!ENTITY tcaron "ť" > <!-- "tˇ" ??? -->
+<!ENTITY Zcaron "Ž" >
+<!ENTITY zcaron "ž" >
+
+<!ENTITY Amacr "Ā" >
+<!ENTITY amacr "ā" >
+<!ENTITY Emacr "Ē" >
+<!ENTITY emacr "ē" >
+<!ENTITY Imacr "Ī" >
+<!ENTITY imacr "ī" >
+<!ENTITY Omacr "Ō" >
+<!ENTITY omacr "ō" >
+<!ENTITY Umacr "Ū" >
+<!ENTITY umacr "ū" >
+
+<!ENTITY Auml "Ä" >
+<!ENTITY auml "ä" >
+<!ENTITY Euml "Ë" >
+<!ENTITY euml "ë" >
+<!ENTITY Iuml "Ï" >
+<!ENTITY iuml "ï" >
+<!ENTITY Ouml "Ö" >
+<!ENTITY ouml "ö" >
+<!ENTITY Uuml "Ü" >
+<!ENTITY uuml "ü" >
+<!ENTITY Yuml "Ÿ" >
+<!ENTITY yuml "ÿ" >
+
+<!ENTITY Aring "Å" >
+<!ENTITY aring "å" >
+<!ENTITY Uring "Ů" >
+<!ENTITY uring "ů" >
+
+<!-- ENTITY ??? "G'" -->
+<!-- ENTITY ??? "ģ" -->
+
+<!ENTITY Gcedil "Ģ" > <!-- C_G_Bcomma !!! -->
+<!ENTITY gcedil "ģ" > <!-- "g‚" ??? C_g_Bcomma !!! -->
+<!ENTITY Kcedil "Ķ" > <!-- C_K_Bcomma !!! -->
+<!ENTITY kcedil "ķ" > <!-- C_k_Bcomma !!! -->
+<!ENTITY Lcedil "Ļ" > <!-- C_L_Bcomma !!! -->
+<!ENTITY lcedil "ļ" > <!-- C_l_Bcomma !!! -->
+<!ENTITY Ncedil "Ņ" > <!-- C_N_Bcomma !!! -->
+<!ENTITY ncedil "ņ" > <!-- C_n_Bcomma !!! -->
+<!ENTITY Rcedil "Ŗ" > <!-- C_R_Bcomma !!! -->
+<!ENTITY rcedil "ŗ" > <!-- C_r_Bcomma !!! -->
+
+<!ENTITY Ccedil "Ç" >
+<!ENTITY ccedil "ç" >
+<!ENTITY Scedil "Ş" >
+<!ENTITY scedil "ş" >
+<!ENTITY Tcedil "Ţ" > <!-- "T¸" ??? -->
+<!ENTITY tcedil "ţ" > <!-- "t¸" ??? -->
+
+<!ENTITY Agrave "À" >
+<!ENTITY agrave "à" >
+<!ENTITY Egrave "È" >
+<!ENTITY egrave "è" >
+<!ENTITY Igrave "Ì" >
+<!ENTITY igrave "ì" >
+<!ENTITY Ograve "Ò" >
+<!ENTITY ograve "ò" >
+<!ENTITY Ugrave "Ù" >
+<!ENTITY ugrave "ù" >
+
+<!ENTITY Aacute "Á" >
+<!ENTITY aacute "á" >
+<!ENTITY Cacute "Ć" >
+<!ENTITY cacute "ć" >
+<!ENTITY Eacute "É" >
+<!ENTITY eacute "é" >
+<!ENTITY Iacute "Í" >
+<!ENTITY iacute "í" >
+<!ENTITY Lacute "Ĺ" >
+<!ENTITY lacute "ĺ" >
+<!ENTITY Nacute "Ń" >
+<!ENTITY nacute "ń" >
+<!ENTITY Oacute "Ó" >
+<!ENTITY oacute "ó" >
+<!ENTITY Racute "Ŕ" >
+<!ENTITY racute "ŕ" >
+<!ENTITY Sacute "Ś" >
+<!ENTITY sacute "ś" >
+<!ENTITY Uacute "Ú" >
+<!ENTITY uacute "ú" >
+<!ENTITY Yacute "Ý" >
+<!ENTITY yacute "ý" >
+<!ENTITY Zacute "Ź" >
+<!ENTITY zacute "ź" >
+
+<!ENTITY Odblac "Ő" >
+<!ENTITY odblac "ő" >
+<!ENTITY Udblac "Ű" >
+<!ENTITY udblac "ű" >
+
+<!ENTITY Atilde "Ã" >
+<!ENTITY atilde "ã" >
+<!ENTITY Ntilde "Ñ" >
+<!ENTITY ntilde "ñ" >
+<!ENTITY Otilde "Õ" >
+<!ENTITY otilde "õ" >
+
+<!ENTITY Lstrok "Ł" >
+<!ENTITY lstrok "ł" >
+<!ENTITY Oslash "Ø" >
+<!ENTITY oslash "ø" >
+
+<!ENTITY Acirc "Â" >
+<!ENTITY acirc "â" >
+<!ENTITY Ecirc "Ê" >
+<!ENTITY ecirc "ê" >
+<!ENTITY Icirc "Î" >
+<!ENTITY icirc "î" >
+<!ENTITY Ocirc "Ô" >
+<!ENTITY ocirc "ô" >
+<!ENTITY Ucirc "Û" >
+<!ENTITY ucirc "û" >
+
+<!ENTITY Dstrok "Đ" >
+<!ENTITY dstrok "đ" >
+<!ENTITY Hstrok "Ħ" >
+<!ENTITY hstrok "ħ" >
+<!ENTITY THORN "Þ" > <!ENTITY thorn "þ" >
+
+<!ENTITY nbsp " " > <!-- !!! -->
+
+<!ENTITY cur "¤" >
+<!ENTITY curren "¤" >
+<!ENTITY lbs "£" >
+<!ENTITY pound "£" >
+<!ENTITY yen "¥" >
+<!ENTITY cnt "¢" >
+<!ENTITY cent "¢" >
+
+<!ENTITY sec "§" >
+<!ENTITY sect "§" >
+<!ENTITY par "¶" >
+<!ENTITY para "¶" >
+<!ENTITY times "×" >
+<!ENTITY divide "÷" >
+<!ENTITY plm "±" >
+<!ENTITY plusmn "±" >
+<!ENTITY s1 "¹" >
+<!ENTITY sup1 "¹" >
+<!ENTITY s2 "²" >
+<!ENTITY sup2 "²" >
+<!ENTITY s3 "³" >
+<!ENTITY sup3 "³" >
+<!ENTITY for "ª" >
+<!ENTITY ordf "ª" >
+<!ENTITY mor "º" >
+<!ENTITY ordm "º" >
+<!ENTITY f2 "1/2" >
+<!ENTITY frac2 "1/2" >
+<!ENTITY f4 "1/4" >
+<!ENTITY frac4 "1/4" >
+<!ENTITY f34 "3/4" >
+<!ENTITY frac34 "3/4" >
+<!ENTITY glf "‹‹" >  <!-- russian " left - double lt !!! -->
+<!ENTITY laquo "‹‹" >  <!-- russian " left - double lt !!! -->
+<!ENTITY glr "››" >  <!-- russian " right - double gt !!! -->
+<!ENTITY raquo "››" >  <!-- russian " right - double gt !!! -->
+<!ENTITY lang "‹" >
+<!ENTITY rang "›" >
+<!ENTITY brvb "¦" >
+<!ENTITY brvbar "¦" >
+<!ENTITY not "¬" >
+<!ENTITY mdt "·" >
+<!ENTITY middot "·" >
+<!ENTITY bull "•" >
+<!ENTITY ldquor ",," >  <!-- !!! " left bellow, double comma, liet. kaire -->
+<!ENTITY rdquo "''" >  <!-- !!! " left above, double comma above, angl. desine -->
+<!ENTITY ldquo "``" >  <!-- !!! " right, reversed double comma above, liet. desine, angl. kaire -->
+<!ENTITY rdquor "``" >  <!-- !!! " right, reversed double comma above, liet. desine, angl. kaire -->
+<!ENTITY lsquor "," > <!-- !!! ' left bellow, comma, liet. kaire -->
+<!ENTITY rsquo "'" > <!-- !!! ' left above, comma above, angl. desine -->
+<!ENTITY lsquo "`" > <!-- !!! ' right, grave, reversed comma above, liet. desine, angl. kaire -->
+<!ENTITY rsquor "`" > <!-- !!! ' right, grave, reversed comma above, liet. desine, angl. kaire -->
+<!ENTITY iqm "¿" >
+<!ENTITY iquest "¿" >
+<!ENTITY ixl "¡" >
+<!ENTITY iexcl "¡" >
+<!ENTITY hellip "..." > 
+<!ENTITY permil "‰" >
+<!ENTITY trade "(tm)" >
+<!ENTITY coy "(c)" >
+<!ENTITY copy "(c)" >
+<!ENTITY trd "(r)" >
+<!ENTITY reg "(r)" >
+
+<!ENTITY forall "V" > <!-- apversta A raide -->
+<!ENTITY exist "E" > <!-- apversta E raide -->
+
+<!ENTITY aleph "א" >
+<!ENTITY image "Im" > <!-- !!! I kursyvu -->
+<!ENTITY real "Re" > <!-- !!! R kursyvu -->
+<!ENTITY weierp "P" > <!-- !!! P kursyvu -->
+
+<!ENTITY le "≤" >
+<!ENTITY ge "≥" >
+<!ENTITY ne "≠" >
+<!ENTITY Lt "‹‹" > <!-- !!! -->
+<!ENTITY Gt "››" > <!-- !!! -->
+<!ENTITY sim "~" > <!-- !!! -->
+<!ENTITY sime "-̃" > <!-- !!! panasu arba sutampa -->
+<!ENTITY ap "≈" >
+<!ENTITY cong "=̃" > <!-- !!! kongruentu -->
+<!ENTITY equiv "≡" >
+
+<!ENTITY radic "√" >
+<!ENTITY int "∫" >
+<!ENTITY conint "∫o" > <!-- !!! kreivinis integralas -->
+<!ENTITY sum "∑" >
+<!ENTITY prod "∏" >
+<!ENTITY otimes "O×" > <!-- !!! O perbraukta kryzmai -->
+<!ENTITY oplus "O+" > <!-- !!! O perbraukta pliusu -->
+
+<!ENTITY infin "∞" >
+<!ENTITY prop "α" > <!-- !!! property to -->
+<!ENTITY vprop "α" > <!-- !!! property to -->
+<!ENTITY part "∂" >
+<!ENTITY empty "Ø" > <!-- !!! -->
+<!ENTITY utri "Δ" > <!-- !!! -->
+<!ENTITY nabla "V" > <!-- !!! apversta "Δ" -->
+
+<!ENTITY perp "┴" > <!-- !!! -->
+<!ENTITY bottom "┴" > <!-- !!! -->
+<!ENTITY ang "‹" > <!-- !!! kampas -->
+
+<!ENTITY cap "∩" >
+<!ENTITY cup "U" > <!-- !!! junginys -->
+
+<!-- ENTITY sup "" !!! D - virsaibis -->
+<!-- ENTITY supe "" D= - virsaibis arba sutampa -->
+<!ENTITY sub "C" > <!-- !!! poaibis -->
+<!ENTITY sube "C=" > <!-- !!! poaibis arba sutampa -->
+<!ENTITY nsub "C/" > <!-- !!! nepoaibis -->
+
+<!ENTITY isin "є" > <!-- !!! priklauso -->
+<!ENTITY notin "є/" > <!-- !!! nepriklauso -->
+<!-- ENTITY ni "" !!! apverstas "є" - apima --> 
+<!-- ENTITY bepsi "" !!! apverstas "є" - apima -->
+
+<!ENTITY larr "←" >
+<!ENTITY rarr "→" >
+<!ENTITY harr "↔" >
+<!ENTITY uarr "↑" >
+<!ENTITY darr "↓" >
+<!ENTITY varr "↕" >
+
+<!ENTITY lArr "‹==" > <!-- !!! -->
+<!ENTITY rArr "==›" > <!-- !!! -->
+<!ENTITY hArr "‹==›" > <!-- !!! -->
+<!ENTITY uArr "↑" > <!-- !!! double arrow up -->
+<!ENTITY dArr "↓" > <!-- !!! double arrow down -->
+<!ENTITY vArr "↕" > <!-- !!! double arrow up and down -->
+
+<!ENTITY mid "|" > <!-- !!! -->
+<!ENTITY par "||" > <!-- !!! parallel -->
+<!ENTITY Verbar "||" > <!-- !!! parallel -->
+
+<!ENTITY diam "◊" >
+
+<!ENTITY clubs "♣" >
+<!ENTITY diams "♦" >
+<!ENTITY hearts "♥" >
+<!ENTITY spades "♠" >
+
+<!-- ENTITY shy "" --> <!-- !!! soft hyphen -->
+<!ENTITY qemspc " " >
+
+<!ENTITY deg "°" >
+<!ENTITY mic "µ" >
+<!ENTITY micro "µ" >
+<!ENTITY ohm "Ω" >
+<!ENTITY angst "Å" > <!-- !!! Angstroem -->
+
+
+<!ENTITY horbar "­" >
+
+<!ENTITY dagger "†" >
+<!ENTITY Dagger "‡" >
+
+<!ENTITY fflig "ff" > <!-- !!! -->
+<!ENTITY filig "fi" > <!-- !!! -->
+<!ENTITY fjlig "fj" > <!-- !!! -->
+<!ENTITY ffilig "ffi" > <!-- !!! -->
+<!ENTITY ffllig "ffl" > <!-- !!! -->
+<!ENTITY fllig "fl" > <!-- !!! -->
+
+<!ENTITY and "^" > <!-- !!! -->
+<!ENTITY or "V" > <!-- !!! -->
+
+<!ENTITY fnof "f" > <!-- !!! curly f -->
+
+<!ENTITY mnplus "-+" > <!-- !!! -->
+
+<!ENTITY ndash "-" > <!-- !!! -->
+<!ENTITY mdash "­" > <!-- !!! -->
+
+<!ENTITY Ygrave "Ỳ" >
+<!ENTITY ygrave "ỳ" >
+<!ENTITY Etilde "Ẽ" >
+<!ENTITY etilde "ẽ" >
+<!ENTITY Itilde "Ĩ" >
+<!ENTITY itilde "ĩ" >
+<!ENTITY Utilde "Ũ" >
+<!ENTITY utilde "ũ" >
+<!ENTITY Ytilde "Ỹ" >
+<!ENTITY ytilde "ỹ" >
+<!ENTITY Ltilde "L̃" > <!-- !!! -->
+<!ENTITY ltilde "l̃" > <!-- !!! -->
+<!ENTITY Mtilde "M̃" > <!-- !!! -->
+<!ENTITY mtilde "m̃" > <!-- !!! -->
+<!ENTITY Rtilde "R̃" > <!-- !!! -->
+<!ENTITY rtilde "r̃" > <!-- !!! -->
+
+
+<!ENTITY Aoa "Ą́" > <!-- !!! -->
+<!ENTITY aoa "ą́" > <!-- !!! -->
+<!ENTITY Eoa "Ę́" > <!-- !!! -->
+<!ENTITY eoa "ę́" > <!-- !!! -->
+<!ENTITY Eda "Ė́" > <!-- !!! -->
+<!ENTITY eda "ė́" > <!-- !!! -->
+<!ENTITY Ioa "Į́" > <!-- !!! -->
+<!ENTITY ioa "į́" > <!-- !!! -->
+<!ENTITY Uoa "Ų́" > <!-- !!! -->
+<!ENTITY uoa "ų́" > <!-- !!! -->
+<!ENTITY Uma "Ū́" > <!-- !!! -->
+<!ENTITY uma "ū́" > <!-- !!! -->
+<!ENTITY Aog "Ą̀" > <!-- !!! -->
+<!ENTITY aog "ą̀" > <!-- !!! -->
+<!ENTITY Eog "Ę̀" > <!-- !!! -->
+<!ENTITY eog "ę̀" > <!-- !!! -->
+<!ENTITY Edg "Ė̀" > <!-- !!! -->
+<!ENTITY edg "ė̀" > <!-- !!! -->
+<!ENTITY Iog "Į̀" > <!-- !!! -->
+<!ENTITY iog "į̀" > <!-- !!! -->
+<!ENTITY Uog "Ų̀" > <!-- !!! -->
+<!ENTITY uog "ų̀" > <!-- !!! -->
+<!ENTITY Umg "Ū̀" > <!-- !!! -->
+<!ENTITY umg "ū̀" > <!-- !!! -->
+<!ENTITY Aot "Ą̃" > <!-- !!! -->
+<!ENTITY aot "ą̃" > <!-- !!! -->
+<!ENTITY Eot "Ę̃" > <!-- !!! -->
+<!ENTITY eot "ę̃" > <!-- !!! -->
+<!ENTITY Edt "Ė̃" > <!-- !!! -->
+<!ENTITY edt "ė̃" > <!-- !!! -->
+<!ENTITY Iot "Į̃" > <!-- !!! -->
+<!ENTITY iot "į̃" > <!-- !!! -->
+<!ENTITY Uot "Ų̃" > <!-- !!! -->
+<!ENTITY uot "ų̃" > <!-- !!! -->
+<!ENTITY Umt "Ū̃" > <!-- !!! -->
+<!ENTITY umt "ū̃" > <!-- !!! -->
+
+<!ENTITY ph_a        "@" >
+<!ENTITY ph_a_inv    "2" >
+<!ENTITY ph_a_sh     "0" >
+<!ENTITY ph_o_sh     "O" >
+<!ENTITY ph_u_sh     "V" >
+<!ENTITY ph_w_sh     "V" > <!-- !!! -->
+<!ENTITY ph_e_sh     "E" >
+<!ENTITY ph_ae       "1" >
+<!ENTITY ph_e_sh_inv "3" >
+<!ENTITY ph_e_inv    "q" >
+<!ENTITY ph_i_sh     "I" >
+<!ENTITY ph_sh       "S" >
+<!ENTITY ph_zh       "Z" >
+<!ENTITY ph_tsh      "7" >
+<!ENTITY ph_dzh      "8" >
+<!ENTITY ph_th_b     "T" >
+<!ENTITY ph_th_v     "D" >
+<!ENTITY ph_ng       "N" >
+<!ENTITY ph_g        "g" >
+
+<!ENTITY ph_oe       "G" >
+<!ENTITY ph_o_slash  "Q" >
+
+<!ENTITY ph_a_l      "@:" >
+<!ENTITY ph_e_inv_l  "q:" >
+<!ENTITY ph_i_l      "i:" >
+<!ENTITY ph_o_l      "o:" >
+<!ENTITY ph_u_l      "9" >
+
+<!ENTITY ph_a_n      "a~" >
+<!ENTITY ph_a_str_n  "A" >
+<!ENTITY ph_e_n      "W" >
+<!ENTITY ph_oe_n     "H" >
+<!ENTITY ph_o_n      "P" >
+
+<!ENTITY ph_ch       "c" >
+
+<!ENTITY ph_ai_d     "ai" >
+<!ENTITY ph_ae_d     "X" >
+<!ENTITY ph_ao_d     "B" >
+<!ENTITY ph_au_d     "au" >
+<!ENTITY ph_ei_d     "ei" >
+<!ENTITY ph_eu_d     "eu" >
+<!ENTITY ph_ie_d     "ie" >
+<!ENTITY ph_oe_d     "C" >
+<!ENTITY ph_oy_d     "oy" >
+<!ENTITY ph_uo_d     "uo" >
+
+<!ENTITY ph_i_Brev   "J" >
+<!ENTITY ph_o_Brev   "L" >
+<!ENTITY ph_u_Brev   "U" >
+
+<!ENTITY ph_acc      "'" >

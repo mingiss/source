@@ -1,0 +1,257 @@
+// ==================================================
+// kperrno.h
+// kp error codes
+//
+
+// ===============================================
+#ifndef kperrno_included
+#define kperrno_included
+
+// -----------------------------------------------------------------------------------------
+// Klaidø apdorojimas
+// Tekstinio praneðimo iðvedimas ir diagnostinio praneðimo siuntimas á gamintojo serverá
+//    lhRetc – klaidos kodas KP_E_..., þr. tolesnius apibrëþimus
+//    wszMessageText - papildomas klaidos praneðimo tekstas (detalesnis uþ numatytà lhRetc, taip pat vardas failo ar kito objekto, kurá apdorojant atsitiko klaida)
+//       gali bûti NULL
+//    lWindowsErrorCode - klaidos kodas ið GetLastError(), WSAGetLastError(), RegOpenKey...(), RegQueryValue...() ir co.
+//       apdorojamas tik jei lpszMessageText == NULL
+//
+extern "C"
+#  ifdef KPLIB_DLL
+__declspec(dllexport)
+#  endif
+#  ifdef KPLIB_DLL_IMP
+// __declspec(dllimport)
+#  endif
+   void KpProcessError(HRESULT lhRetc, const wchar_t *wszMessageText, LONG lWindowsErrorCode, const char *lpszSourceFile, int iSourceLine);
+
+#ifdef KPLIB_DLL_IMP
+typedef void (*KpProcessErrorFunPtr)(HRESULT lhRetc, const wchar_t *wszMessageText, LONG lWindowsErrorCode, const char *lpszSourceFile, int iSourceLine);
+#define KP_PROCESS_ERROR(lhRetc, wszMessageText, lWindowsErrorCode, /* bool */ bSuccess) \
+{ \
+HMODULE xfs_lib = NULL; \
+KpProcessErrorFunPtr kp_process_error_fun_ptr = NULL; \
+   xfs_lib = LoadLibraryA("XFS.dll"); \
+   if(xfs_lib != NULL) \
+   { \
+      kp_process_error_fun_ptr = (KpProcessErrorFunPtr)::GetProcAddress(xfs_lib, "KpProcessError"); \
+      if(kp_process_error_fun_ptr != NULL) \
+         (*kp_process_error_fun_ptr)(lhRetc, wszMessageText, lWindowsErrorCode, __FILE__, __LINE__); \
+   } \
+   bSuccess = ((xfs_lib != NULL) && (kp_process_error_fun_ptr != NULL)); \
+}
+#else
+#  if FALSE
+#define KP_PROCESS_ERROR(lhRetc, wszMessageText, lWindowsErrorCode, /* bool */ bSuccess) \
+{ \
+   KpProcessError(lhRetc, wszMessageText, lWindowsErrorCode, __FILE__, __LINE__); \
+   bSuccess = TRUE; \
+}
+#  endif
+#define KP_PROCESS_ERROR(lhRetc, wszMessageText, lWindowsErrorCode) KpProcessError(lhRetc, wszMessageText, lWindowsErrorCode, __FILE__, __LINE__)
+#endif
+
+
+// -----------------------------------------------------------------------------------------
+
+// ================================================== definitions
+#define KP_MAX_FNAME_LEN 260 // MAX_PATH     // atkelta ið kpstdlib.h
+
+// ================================================== error definitions (kperr.cpp)
+#ifdef Envir
+#  if ((CompilerGr!=Msvc) && (Compiler!=Watcom) && (Compiler!=Mingw))
+
+typedef long HRESULT;
+
+
+#define SEVERITY_ERROR (0x80000000L)
+#define FACILITY_ITF (0L)
+#define MAKE_HRESULT(a,b,c) ((HRESULT)((a)|(b)|(c)))
+
+#define SUCCEEDED(h) ((h)==S_OK)
+#define FAILED(h) ((h)!=S_OK)
+
+// ================================================== error messages
+extern HRESULT KpOutputErrorMessage
+(
+   const HRESULT lhRetc,
+   const unsigned char *lpszMessageText,
+   const bool bSevereError,
+   const char *lpszSourceFile,
+   const int iSourceLine,
+   const long lMainKeyId = 0L
+);
+
+#define cskerror(ernum, ertxt, funnam, filnam) (KpOutputErrorMessage((ernum), (ertxt), TRUE, __FILE__, __LINE__, 0L))
+                              /* error message */
+#define csperror(ernum, ertxt, funnam, filnam) (KpOutputErrorMessage((ernum), (ertxt), FALSE, __FILE__, __LINE__, 0L))
+                              /* warning message */
+
+
+// ================================================== return codes
+// ok
+#define S_OK         0
+// invalid parameter
+#define E_INVALIDARG (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 1))
+// feature not implemented yet
+#define E_NOTIMPL    (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 2))
+// out of memory
+#define E_OUTOFMEMORY ((HRESULT)0x8007000EL)
+// illegal function call (at the moment)
+#define E_UNEXPECTED ((HRESULT)0x8000FFFFL)
+#define E_NOINTERFACE ((HRESULT)0x80004002L)
+#define E_POINTER ((HRESULT)0x80004003L)
+#define E_HANDLE ((HRESULT)0x80070006L)
+// job cancelled
+#define E_ABORT ((HRESULT)0x80004004L)
+#define E_FAIL ((HRESULT)0x80004005L)
+// Access denied
+#define E_ACCESSDENIED ((HRESULT)0x80070005L)
+#define E_PENDING ((HRESULT)0x8000000AL)
+
+// =========================================================
+#  endif // #if ((CompilerGr!=Msvc) && (Compiler!=Watcom) && (Compiler!=Mingw))
+#endif // #ifdef Envir
+
+
+// out of memory
+#define KP_E_OUTOFMEM         E_OUTOFMEMORY  // (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 +  1))
+// double unget
+#define KP_E_DOUBLE_UNGET     (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 +  2))
+// file not found
+#define KP_E_FILE_NOT_FOUND   (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 +  3))
+// unable to create file
+#define KP_E_DIR_ERROR        (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 +  4))
+// file error
+#define KP_E_FERROR           (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 +  5))
+// internal error
+#define KP_E_SYSTEM_ERROR     (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 +  6))
+// unexpected end of input file
+#define KP_E_EOF              (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 +  7))
+// unexpected input file format
+#define KP_E_FILE_FORMAT      (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 +  8))
+// no file open
+#define KP_E_NO_FILE          (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 +  9))
+// unknown character
+#define KP_E_UNKN_CHR         (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 10))
+// external error
+#define KP_E_COMMAND_ERROR    (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 11))
+// buffer overflow
+#define KP_E_BUFFER_OVERFLOW  (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 12))
+// font undefined
+#define KP_E_FONT_UNDEF       (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 13))
+// keyword not found
+#define KP_E_KWD_NOT_FOUND    (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 14))
+// unknown OS version
+#define KP_E_UNKNOWN_SYSTEM   (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 15))
+// illegal registration code
+#define KP_E_ILL_CODE         (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 16))
+// job cancelled
+#define KP_E_CANCEL           E_ABORT  // (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 17))
+// duplicated call to function, illegal recursion etc.
+#define KP_E_DOUBLE_CALL      E_PENDING // (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 18))
+// timeout when waiting for answer
+#define KP_E_TIMEOUT          (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 19))
+// object not found
+#define KP_E_OBJ_NOT_FOUND    (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 20))
+// no connection
+#define KP_E_NO_CONN          (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 21))
+// transfer error
+#define KP_E_TRANS_ERR        (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 22))
+// registration refused
+#define KP_E_REFUSED          (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 23))
+// Access denied
+#define KP_E_ACCESS_DENIED    E_ACCESSDENIED    // (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 24))
+// illegal character
+#define KP_E_ILL_CHR          (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 25))
+// skip next operation - return code, not error
+#define KP_E_SKIP             (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 26))
+// division by zero
+#define KP_E_DIV_ZERO         (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 27))
+// negative sqrt() parameter
+#define KP_E_ILLMATHARG       (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 28)) // former KP_E_IRRAC
+// illegal function call
+#define KP_E_ILLFUNC          (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 29))
+// program not installed
+#define KP_E_NOTINST          (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 30))
+// unexpected message format
+#define KP_E_MSG_FORMAT       (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 31))
+// obsolete function
+#define KP_E_OBSOLETE         (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 32))
+// help, forgot an password, etc
+#define KP_E_HELP             (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 33))
+// negative answer from called function / received IP message
+#define KP_E_NEG_ANSW         (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 34))
+// file changed // pvz., uþsikrëtë virusu
+#define KP_E_FILE_CHANGED     (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 35))
+// formuojamas diagnostinis praneðimas
+#define KP_S_DIAG_MSG         (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 36))
+// Neteisingas e-paðto adresas
+#define KP_E_BAD_EMAIL        (MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200 + 0x100 + 37))
+
+// ---------------------- for compatibility with older kp environment
+#define Rk_rde KP_E_FERROR
+#define Rk_wre KP_E_FERROR
+#define Rk_ntf KP_E_FILE_NOT_FOUND
+#define Rk_drf KP_E_DIR_ERROR
+
+
+// ================================================== return from main()
+#define RET_CODE_MAIN(h) (h) // (SUCCEEDED(h)?EXIT_SUCCESS:EXIT_FAILURE) // return code of main(), exit() or ThreadProc(): 0 - success, not 0 (0xFF) - error // former RET_CODE
+#define RET_CODE_WIN(h) (h) // return code of WinMain(): 0 - success // (SUCCEEDED(h)) // return code of WinMain() and wxApp::OnInit(): True - success, False - error // former RET_CODE
+
+
+// =========================================
+// praneðimo iðvedimas, atkelta ið kpwindow.h
+//
+typedef enum
+{
+KP_MB_OK,
+KP_MB_GERAI,
+KP_MB_TESTI,
+KP_MB_BAIGTI,
+KP_MB_OK_CANCEL,
+KP_MB_GERAI_ATSAUKTI,
+KP_MB_TESTI_ATSAUKTI,
+KP_MB_YES_NO,
+KP_MB_TAIP_NE,
+KP_MB_GERAI_ATSAUKTI_PAMIRSAU,
+} KpMsgTypes;
+
+//---------------------------- text alignments
+#if FALSE
+typedef enum
+{
+   KPW_ALIGN_CENTER,
+   KPW_ALIGN_LEFT,
+
+} KpAlignments;
+#endif
+typedef int KpAlignments;
+
+#define KPW_ALIGN_CENTER   ((KpAlignments)1) // teksto praneðimas centruotas
+#define KPW_ALIGN_LEFT     ((KpAlignments)2)  // teksto praneðimas lygiuota á kairæ
+#define KPW_ALIGN_UP       ((KpAlignments)4)  // praneðimo langas pastumtas aukðtyn, kad neuþstotø kitø galimø praneðimø
+
+// -------------------------------------
+extern
+#ifdef KPSTTRG_DLL_IMP
+"C" __declspec(dllimport)
+#endif
+#ifdef KPSTTRG_DLL
+"C" // __declspec(dllexport)
+#endif
+HRESULT KpMsgOut(const char *lpszOutStr, LPCTSTR lpszIconID, KpMsgTypes iMsgType, int iTimeOut = 0, KpAlignments iAlign = KPW_ALIGN_CENTER);
+
+#if Compiler!=Watcom
+extern
+#ifdef KPSTTRG_DLL_IMP
+"C" __declspec(dllimport)
+#endif
+#ifdef KPSTTRG_DLL
+"C" // __declspec(dllexport)
+#endif
+HRESULT KpMsgOutStr(std::string sOutStr, LPCTSTR lpszIconID, KpMsgTypes iMsgType, int iTimeOut = 0, KpAlignments iAlign = KPW_ALIGN_CENTER);
+#endif
+
+#endif // #ifndef kperrno_included

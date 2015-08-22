@@ -1,0 +1,468 @@
+<!-- XML file style table for dictionaries (tvxmlt.dtd) -->
+
+<!-- Non-root-entry -->
+ue
+   {
+      display: block;
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Normal;
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Standard entry -->
+se
+   {
+      display: block;
+      font-size: 1pt;
+      padding: 0;
+   }
+
+<!-- Standard entry id in textual form (with possible alphanumerical indexes etc.) -->
+<!--  color: #38C740; -->
+st
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+      border: 1cm;
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Free text inside of Headword group (parentheses) -->
+hg
+   {
+      font-family: Palemonas;
+      font-size: 1pt;
+      font: Normal;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Headword -->
+hw
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Compound Base -->
+base
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+      font: Italic;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Variant -->
+v
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #7F3F00;
+   }
+
+<!-- Variant normal -->
+vn
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Normal;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #7F3F00;
+   }
+->
+
+<!-- Example group -->
+eg
+   {
+      font-family: Palemonas;
+      font-size: 1pt;
+      font: Normal;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Example -->
+<!-- color: #38C740; -->
+le
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #006000;
+   }
+
+<!-- Usage -->
+<!-- color: #38C740; -->
+lu
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #006000;
+   }
+
+<!-- Structure -->
+ls
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #808000;
+   }
+
+<!-- Obligatory structure -->
+lo
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #808000;
+   }
+
+<!-- Idiom group -->
+id
+   {
+      font-family: Palemonas;
+      font-size: 1pt;
+      font: Normal;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Idiom -->
+li
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #808000;
+   }
+
+<!-- Compound group -->
+cg
+   {
+      font-family: Palemonas;
+      font-size: 1pt;
+      font: Normal;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Compound Headword -->
+lc
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #808000;
+   }
+
+<!-- Compound word -->
+scw
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #808000;
+   }
+
+<!-- Translation group -->
+tg
+   {
+      font-family: Palemonas;
+      font-size: 1pt;
+      font: Normal;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Translated headword -->
+tw
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Normal;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Usage note (headword explanation) -->
+un
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Normal;
+      padding: 0;
+      color: #000000;
+   }
+
+us
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Normal;
+      padding: 0;
+      color: #7F3F00;
+   }
+
+<!-- Part of speech src -->
+ps
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Italic;
+      font: Normal;
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Part of speech dst -->
+gr
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Italic;
+      font: Normal;
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Stress paradigm -->
+ac
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Normal;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Grammatical controll in source language -->
+sp
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Italic;
+      font: Normal;
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- Grammatical controll in destination language -->
+dp
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Italic;
+      font: Normal;
+      padding: 0;
+      color: #000000;
+   }
+
+<!-- BoldForm -->
+f
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+      padding: 0;
+      color: #D00000;
+   }
+
+<!-- SemiBoldForm -->
+fs
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: SemiBold;
+      padding: 0;
+      color: #D00000;
+   }
+
+<!-- Label (usage region) -->
+la
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Italic;
+      font: Normal;
+      color: #008080;
+<!--  padding: 1em; -->
+      padding: 0;
+<!--  content: "[" -->
+   }
+
+<!-- Context -->
+co
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Normal;
+<!--  padding: 1em; -->
+      color: #008080;
+      padding: 0;
+<!--  content: "[" -->
+   }
+
+<!-- Pronunciation -->
+ph
+   {
+      font-family: PhoneticTMUniv;
+      font-size: 12pt;
+      font: Normal;
+      color: #C000C0;
+<!--  padding: 1em; -->
+      padding: 0;
+<!--  content: "[" -->
+   }
+
+<!-- Reduced pronunciation -->
+pd
+   {
+      font-family: PhoneticTMUniv;
+      font-size: 12pt;
+      font: Normal;
+      color: #C000C0;
+<!--  padding: 1em; -->
+      padding: 0;
+<!--  content: "[" -->
+   }
+
+<!-- Homonym number -->
+hm
+   {
+      font-family: Palemonas;
+      font-size: 9pt;
+      font: Subscript;
+      color: #000000;
+<!--  padding: 1em; -->
+      padding: 0;
+   }
+
+<!-- Source explanation -->
+ic
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Italic;
+      font: Normal;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #D00000;
+<!--  content: "(" -->
+   }
+
+<!-- Destination explanation -->
+dc
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Italic;
+      font: Normal;
+<!--  padding: 1em; -->
+      padding: 0;
+      color: #D00000;
+<!--  content: "(" -->
+   }
+
+<!-- Reference -->
+xr
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Bold;
+      padding: 0;
+      color: #0000C0;
+<!--  content: ">" -->
+   }
+
+<!-- Superscript -->
+su
+   {
+      font-family: Palemonas;
+      font-size: 9pt;
+      font: Superscript;
+      color: #000000;
+<!--  padding: 1em; -->
+      padding: 0;
+   }
+
+<!-- Parentheses -->
+pt
+   {
+      font-size: 12pt;
+      padding: 0;
+   }
+
+<!-- Abbreviation -->
+ct
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Italic;
+      font: Normal;
+      color: #707070;
+<!--  padding: 1em; -->
+      padding: 0;
+<!--  content: "[" -->
+   }
+
+<!-- Connector -->
+cp
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Normal;
+      color: #707070;
+<!--  padding: 1em; -->
+      padding: 0;
+<!--  content: "[" -->
+   }
+
+<!-- Technical notes -->
+ed
+   {
+      font-family: Palemonas;
+      font-size: 12pt;
+      font: Normal;
+      padding: 0;
+      color: #B0B0B0;
+   }
+
